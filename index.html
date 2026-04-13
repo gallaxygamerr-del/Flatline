@@ -108,12 +108,13 @@ nav {
   position: fixed; top:0; left:0; right:0; z-index:500;
   height: var(--nav-h);
   display: flex; justify-content:space-between; align-items:center;
-  padding: 0 32px;
+  padding: 0 20px;
   background: rgba(10,10,10,0.85);
   backdrop-filter: blur(24px) saturate(1.5);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
   transition: var(--transition);
+  overflow: hidden;
 }
 nav.scrolled {
   background: rgba(10,10,10,0.97);
@@ -122,15 +123,16 @@ nav.scrolled {
 
 .nav-logo {
   font-family: var(--serif);
-  font-size: 22px; font-weight:700; font-style:italic;
+  font-size: 20px; font-weight:700; font-style:italic;
   color: var(--white); letter-spacing:0.01em;
+  flex-shrink: 0;
 }
 .nav-logo span { color:var(--red); font-style:normal; }
 
-.nav-links { display:flex; gap:2px; list-style:none; align-items:center; }
+.nav-links { display:none; gap:2px; list-style:none; align-items:center; }
 .nav-links a {
-  color: var(--muted); font-size:12px; font-weight:500;
-  letter-spacing:0.02em; padding:7px 12px;
+  color: var(--muted); font-size:11px; font-weight:500;
+  letter-spacing:0.02em; padding:6px 10px;
   border-radius:100px; transition:var(--transition);
   white-space:nowrap;
 }
@@ -141,7 +143,7 @@ nav.scrolled {
 }
 .nav-cta:hover { background:#e74c3c !important; transform:translateY(-1px); box-shadow:0 6px 24px var(--red-glow) !important; }
 
-.hamburger { display:none; flex-direction:column; gap:6px; background:none; border:none; padding:8px; min-width:44px; min-height:44px; align-items:center; justify-content:center; }
+.hamburger { display:flex; flex-direction:column; gap:6px; background:none; border:none; padding:8px; min-width:44px; min-height:44px; align-items:center; justify-content:center; }
 .hamburger span { display:block; width:22px; height:1.5px; background:var(--white); border-radius:2px; transition:var(--transition); }
 .hamburger.open span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
@@ -703,6 +705,11 @@ footer { background:var(--bg); border-top:1px solid var(--border); padding:48px 
 .footer-bottom span { color:var(--red); }
 
 /* ── DESKTOP ── */
+@media (min-width:680px) {
+  .nav-links { display:flex; }
+  .hamburger { display:none; }
+  .mobile-menu { display:none !important; }
+}
 @media (min-width:900px) {
   :root { --nav-h:72px; }
   nav { padding:0 48px; }
@@ -1425,8 +1432,8 @@ footer { background:var(--bg); border-top:1px solid var(--border); padding:48px 
 }
 
 /* ── SMOOTH NAV TRANSITIONS ── */
-.sec, section { scroll-margin-top: calc(var(--nav-h) + 16px); }
-html { scroll-padding-top: calc(var(--nav-h) + 16px); }
+.sec, section { scroll-margin-top: calc(var(--nav-h) + 8px); }
+html { scroll-padding-top: calc(var(--nav-h) + 8px); }
 
 /* Active nav link indicator */
 .nav-links a.nav-active { color: var(--white); }
@@ -2048,7 +2055,7 @@ window.addEventListener('scroll', () => {
   let current = '';
   navSections.forEach(id => {
     const el = document.getElementById(id);
-    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+    if (el && window.scrollY >= el.offsetTop - (window.innerHeight * 0.35)) current = id;
   });
   document.querySelectorAll('.nav-links a[href]').forEach(a => {
     a.classList.toggle('nav-active', a.getAttribute('href') === '#' + current && current !== '');
@@ -2528,7 +2535,7 @@ window.addEventListener('scroll', () => {
   let current = '';
   navSections.forEach(id => {
     const el = document.getElementById(id);
-    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+    if (el && window.scrollY >= el.offsetTop - (window.innerHeight * 0.35)) current = id;
   });
   document.querySelectorAll('.nav-links a[href]').forEach(a => {
     const href = a.getAttribute('href');
